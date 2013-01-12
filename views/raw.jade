@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  #raw
+    table.table 
+      for value, key in values
+        - var id = key.replace(/\//g, '_').replace(/\./g, '');
+        tr(id=id)
+          td.topic=key
+          td=value.at
+          td=value.value
+
+
+
+
+block scripts
+  script(src='/socket.io/socket.io.js')
+  script
+    $(document).ready(function(){
+      listenSocket();
+    });
+
+    function listenSocket(){
+      var socket = io.connect('/raw');
+      socket.on('raw-changed', function(data){
+        var id = data.topic.replace(/\//gi, '_');
+        var id = id.replace(/\./g, '');
+        var p = $('#' + id );
+        if(p.length == 0){
+          $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td></td><td>' + data.payload + '</td></tr>\n');
+        }
+        else {
+          var p2  =$(p[0]).children('td');
+          p2.eq(2).html(data.payload);
+          p2.eq(1).html((new Date()).toString());
+        }
+      });
+
+    }

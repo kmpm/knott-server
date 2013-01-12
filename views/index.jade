@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  table
+    for val, key in topics
+      tr 
+        td=key
+        td=val.payload
+        td=val.at
+        td=val.flagword

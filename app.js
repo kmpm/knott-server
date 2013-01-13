@@ -5,7 +5,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , util = require('util')
@@ -41,7 +40,8 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 
 var io = socket.listen(server);
+io.set('log level', 1);
 require('./routes/config')(app, io);
 require('./routes/raw')(app, io);
-
+require('./plugins/fst').routes(app);
 

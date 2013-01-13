@@ -6,15 +6,14 @@ var util = require('util')
 var raw = {};
 function initMq(myio) {
   var mq = new Mq();
-  mq.on('ready', mq.connect);
-  mq.on('connected', function(){
+  mq.on('ready', function(){
     mq.subscribe('/raw/#');
   });
   mq.on('data', function(packet){
     //console.log("raw data", packet.topic, packet.payload);
+    raw[packet.topic]={at:new Date(), value:packet.payload};
     myio.clients().forEach(function(c){
       c.emit('raw-changed', {topic:packet.topic, payload:packet.payload});
-      raw[packet.topic]={at:new Date(), value:packet.payload};
     });
   });
   return mq;

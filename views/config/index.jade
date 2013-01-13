@@ -4,33 +4,15 @@ block content
   .tabbable.tabs-left
     ul.nav.nav-tabs  
       for categories, driver in config
-        li.active
+        li
           a(href="##{driver}", data-toggle="tab")=driver
 
     .tab-content
       for categories, driver in config
-        .tab-pane.active(id="#{driver}")
-          //inner tabs
-          .tabbable
-            for devices, category in categories
-              ul.nav.nav-tabs
-                li.active
-                  a(href="##{driver}_#{category}", data-toggle="tab")=category
-              .tab-content
-                for devices, category in categories
-                  .tab-pane.active(id="{driver}_#{category}")
-                    for values, device in devices
-                      h3=device
-                      div.form-horizontal
-                        for value, key in values
-                          .control-group
-                              label.control-label=key
-                              .controls
-                                
-                                input.config-input(id="#{driver}_#{category}_#{device}_#{key}", name="#{driver}_#{category}_#{device}_#{key}", value=value)
-                                button.hidden(href="#") 
-                                  i.icon-ok
-
+        .tab-pane(id="#{driver}")
+          include slask 
+          
+        
 block scripts
   script(src='/socket.io/socket.io.js')
   script(src="/javascripts/config.js")

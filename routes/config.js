@@ -1,31 +1,20 @@
 var util = require('util')
-  ,  Mq = require('../lib/mq');
+  , Topics = require('../lib/topics');
 
-var config={};
+var config=new Topics();
 
-var mq = new Mq();
 function getConfig(configio) {
-  mq.on('ready', mq.connect);
-  mq.on('connected', function(){
-    mq.subscribe('/config/#');
+  config.on('ready', function(){
+    config.subscribe('/config/#');
   });
-  mq.on('data', function(packet) {
-    //console.log(packet);
-    var adf = packet.topic.split('/');
-    var n = config;
-    for(var i=2; i<adf.length-1; i++){
-      if(!n.hasOwnProperty(adf[i])){
-        n[adf[i]]={};
-      }
-      n = n[adf[i]];
-    }
-    n[adf[adf.length-1]]=packet.payload;
-    //console.log(">>>", util.inspect(config, false, null));
-
-    
-    var em = {topic:packet.topic, payload:packet.payload, name:adf.slice(2).join('_')};
+  config.on('changed', function(packet) {
     configio.clients().forEach(function(c){
-      c.emit('config-changed', em);
+      c.emit('config-changed', packet);
+    });
+  });
+  config.on('removed', function(packet){
+    configio.clients().forEach(function(c){
+      c.emit('config-removed', packet);
     });
   });
 }
@@ -38,15 +27,20 @@ module.exports =  Routes = function(app, io) {
       console.log('socket.io connected');
       socket.on('config-update', function(data){
         var topic = '/config/' + data.name.split('_').join('/');
-        mq.publish({topic:topic, payload:data.value});
+        config.set(topic, data.value);
+      });
+      socket.on('config-delete', function(data){
+        var topic = '/config/' + data.name.split('_').join('/');
+        config.remove(topic);
       });
     });
 
   getConfig(configio);
   
-  app.locals.config=config;
+  //app.locals.config=config.topics.config;
   
   app.get(prefix, function(req, res){
-    res.render('config'); 
+    console.log(util.inspect(config.get('/config'), false, null));
+    res.render('config', {config:config.get('/config')}); 
   });
 };

@@ -1,0 +1,34 @@
+
+//inner tabs
+.tabbable
+  for devices, category in categories
+    ul.nav.nav-tabs
+      li
+        a(href="##{driver}_#{category}", data-toggle="tab")=category
+  .tab-content
+    for devices, category in categories
+      .tab-pane(id="#{driver}_#{category}")
+        for values, device in devices
+          h3=device
+          //table
+          table.table.config-device(id="#{driver}_#{category}_#{device}")
+            thead
+              tr
+                th Key
+                th Value
+                th
+                  a.float-right.btn.config-add(href="#")
+                    i.icon-plus
+            tbody
+              for value, key in values
+                tr(id="#{driver}_#{category}_#{device}_#{key}")
+                    td.config-key=key
+                    td 
+                      input.config-input(name="#{driver}_#{category}_#{device}_#{key}", value=value)
+                      a.btn.hidden.config-save(href="#") 
+                        i.icon-ok
+                    td
+                      a.btn.config-delete
+                        i.icon-trash
+
+

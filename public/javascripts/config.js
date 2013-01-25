@@ -62,6 +62,7 @@ function bindConfigEvents(master){
     }
   
     var value = $input.val();
+    console.log("name", name);
     page.socket.emit('config-update', {name:name, value:value});
     $(this).addClass('hidden');
   }

@@ -10,6 +10,9 @@
     "jade": "*",
     "stylus": "*",
     "mqttjs": "*",
-    "socket.io", "*"
+    "socket.io": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
   }
 }

@@ -4,14 +4,14 @@
   for devices, category in categories
     ul.nav.nav-tabs
       li
-        a(href="##{driver}_#{category}", data-toggle="tab")=category
+        a(href="#config_#{driver}_#{category}", data-toggle="tab")=category
   .tab-content
     for devices, category in categories
-      .tab-pane(id="#{driver}_#{category}")
+      .tab-pane(id="config_#{driver}_#{category}")
         for values, device in devices
           h3=device
           //table
-          table.table.config-device(id="#{driver}_#{category}_#{device}")
+          table.table.config-device(id="config_#{driver}_#{category}_#{device}")
             thead
               tr
                 th Key
@@ -21,10 +21,10 @@
                     i.icon-plus
             tbody
               for value, key in values
-                tr(id="#{driver}_#{category}_#{device}_#{key}")
+                tr(id="config_#{driver}_#{category}_#{device}_#{key}")
                     td.config-key=key
                     td 
-                      input.config-input(name="#{driver}_#{category}_#{device}_#{key}", value=value)
+                      input.config-input(name="config_#{driver}_#{category}_#{device}_#{key}", value=value)
                       a.btn.hidden.config-save(href="#") 
                         i.icon-ok
                     td

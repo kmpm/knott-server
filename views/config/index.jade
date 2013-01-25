@@ -5,11 +5,11 @@ block content
     ul.nav.nav-tabs  
       for categories, driver in config
         li
-          a(href="##{driver}", data-toggle="tab")=driver
+          a(href="#config_#{driver}", data-toggle="tab")=driver
 
     .tab-content
       for categories, driver in config
-        .tab-pane(id="#{driver}")
+        .tab-pane(id="config_#{driver}")
           include slask 
           
         

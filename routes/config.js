@@ -26,11 +26,11 @@ module.exports =  Routes = function(app, io) {
     .on('connection', function(socket){
       console.log('socket.io connected');
       socket.on('config-update', function(data){
-        var topic = '/config/' + data.name.split('_').join('/');
+        var topic = config.getTopic( data.name.split );
         config.set(topic, data.value);
       });
       socket.on('config-delete', function(data){
-        var topic = '/config/' + data.name.split('_').join('/');
+        var topic = config.getTopic(data.name);
         config.remove(topic);
       });
     });

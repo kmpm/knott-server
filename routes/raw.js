@@ -23,11 +23,11 @@ module.exports = Routes = function(app,io) {
     .of(prefix)
     .on('connection', function(socket){
       console.log("connected");
-    })
-    .on('raw-delete', function(data){
-      var topic = config.getTopic(data.name);
-      console.log("web is trying to remove" , topic);
-      raw.remove(topic); 
+      socket.on('raw-delete', function(data){
+        var topic = raw.getTopic(data.name);
+        console.log("web is trying to remove" , topic);
+        raw.remove(topic); 
+      });
     });
   
   initMq(myio);

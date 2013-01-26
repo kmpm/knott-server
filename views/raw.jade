@@ -10,7 +10,7 @@ block content
           td
           td=value.value
           td
-            a.btn.config-delete(data-topic=id)
+            a.btn.raw-delete(data-topic=id)
               i.icon-trash
 
 
@@ -19,18 +19,30 @@ block content
 block scripts
   script(src='/socket.io/socket.io.js')
   script
+    var page={};
     $(document).ready(function(){
       listenSocket();
+      $('.raw-delete').click(deleteHandler);
     });
+
+    function deleteHandler(e){
+      e.preventDefault();
+      var $this=$(this);
+      var name = $this.data('topic');
+      var row = $this.closest('tr');
+      page.socket.emit('raw-delete', {name:name});
+      row.remove();
+    }
 
     function listenSocket(){
       var socket = io.connect('/raw');
+      page.socket = socket;
       socket.on('raw-changed', function(data){
         var id = data.topic.replace(/\//gi, '_').substring(1);
         var id = id.replace(/\./g, '');
         var p = $('#' + id );
         if(p.length == 0){
-          $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td></td><td>' + data.payload + '</td><td><a data-topic="' + id + '" href="#"><i class="icon-trash"></i></td></tr>\n');
+          $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td></td><td>' + data.payload + '</td><td><a class="raw-delete" data-topic="' + id + '" href="#"><i class="icon-trash"></i></td></tr>\n');
         }
         else {
           var p2  =$(p[0]).children('td');

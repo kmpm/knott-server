@@ -4,11 +4,14 @@ block content
   #raw
     table.table 
       for value, key in values
-        - var id = key.replace(/\//g, '_').replace(/\./g, '');
+        - var id = key.replace(/\//g, '_').replace(/\./g, '').substring(1);
         tr(id=id)
           td.topic=key
           td=value.at
           td=value.value
+          td
+            a.btn.config-delete(data-topic=id)
+              i.icon-trash
 
 
 

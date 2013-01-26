@@ -1,0 +1,39 @@
+
+//inner tabs
+.tabbable
+  ul.nav.nav-tabs
+    for devices, category in categories
+      li
+        a(href="#config_#{driver}_#{category}", data-toggle="tab")=category
+  .tab-content
+    for devices, category in categories
+      .tab-pane(id="config_#{driver}_#{category}")
+        for values, device in devices
+          .config-device(id="config_#{driver}_#{category}_#{device}")
+            .config-device-header
+              h3=device
+              a.btn.config-delete(data-topic="config_#{driver}_#{category}_#{device}")
+                i.icon-trash
+            .config-device-body
+              //table
+              table.table
+                thead
+                  tr
+                    th Key
+                    th Value
+                    th
+                      a.float-right.btn.config-add(href="#")
+                        i.icon-plus
+                tbody
+                  for value, key in values
+                    tr(id="config_#{driver}_#{category}_#{device}_#{key}")
+                        td.config-key=key
+                        td 
+                          input.config-input(name="config_#{driver}_#{category}_#{device}_#{key}", value=value)
+                          a.btn.hidden.config-save(href="#") 
+                            i.icon-ok
+                        td
+                          a.btn.config-delete(data-topic="config_#{driver}_#{category}_#{device}_#{key}")
+                            i.icon-trash
+
+

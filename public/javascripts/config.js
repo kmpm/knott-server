@@ -27,12 +27,14 @@ function bindConfigEvents(master){
 
   function deleteConfigHandler(e){
     e.preventDefault();
-    var row = $(this).closest('tr')
+    var $this = $(this);
 
-    var name = row.find('.config-input').eq(0)
-      .attr('name');
+    var name = $this.data('topic');
+    if ($this.parent().is('td')){
+      var row = $(this).closest('tr')
+      row.remove();
+    }
     page.socket.emit('config-delete', {name:name});
-    row.remove();
   }
 
   function changedConfigHandler(eventObject){

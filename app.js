@@ -43,5 +43,4 @@ var io = socket.listen(server);
 io.set('log level', 1);
 require('./routes/config')(app, io);
 require('./routes/raw')(app, io);
-require('./plugins/fst').routes(app);
 

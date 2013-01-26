@@ -8,9 +8,11 @@ block content
           a(href="#config_#{driver}", data-toggle="tab")=driver
 
     .tab-content
+      //list categories for driver
       for categories, driver in config
         .tab-pane(id="config_#{driver}")
-          include slask 
+          //before include
+          include inner-tabs 
           
         
 block scripts

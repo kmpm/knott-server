@@ -26,11 +26,13 @@ module.exports =  Routes = function(app, io) {
     .on('connection', function(socket){
       console.log('socket.io connected');
       socket.on('config-update', function(data){
-        var topic = config.getTopic( data.name.split );
+        var topic = config.getTopic( data.name );
+        console.log("web is trying to update", topic , "to", data.value);
         config.set(topic, data.value);
       });
       socket.on('config-delete', function(data){
         var topic = config.getTopic(data.name);
+        console.log("web is trying to remove", topic);
         config.remove(topic);
       });
     });
@@ -40,7 +42,8 @@ module.exports =  Routes = function(app, io) {
   //app.locals.config=config.topics.config;
   
   app.get(prefix, function(req, res){
-    console.log(util.inspect(config.get('/config'), false, null));
-    res.render('config', {config:config.get('/config')}); 
+    var configdata = config.get('/config') || {};
+    console.log(util.inspect(configdata, false, null));
+    res.render('config', {config:configdata}); 
   });
 };

@@ -7,7 +7,7 @@ block content
         - var id = key.replace(/\//g, '_').replace(/\./g, '').substring(1);
         tr(id=id)
           td.topic=key
-          td=value.at
+          td
           td=value.value
           td
             a.btn.config-delete(data-topic=id)

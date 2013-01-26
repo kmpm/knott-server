@@ -1,22 +1,19 @@
 
 var util = require('util')
-  ,  Mq = require('../lib/mq');
+  , Topics = require('../lib/topics');  
 
+var raw = new Topics();
 
-var raw = {};
 function initMq(myio) {
-  var mq = new Mq();
-  mq.on('ready', function(){
-    mq.subscribe('/raw/#');
+  raw.on('ready', function(){
+    raw.subscribe('/raw/#');
   });
-  mq.on('data', function(packet){
-    //console.log("raw data", packet.topic, packet.payload);
-    raw[packet.topic]={at:new Date(), value:packet.payload};
-    myio.clients().forEach(function(c){
+  raw.on('changed', function(packet){
+    myio.clients().forEach(function(c) {
       c.emit('raw-changed', {topic:packet.topic, payload:packet.payload});
     });
   });
-  return mq;
+  return raw;
 }
 
 module.exports = Routes = function(app,io) {
@@ -26,12 +23,20 @@ module.exports = Routes = function(app,io) {
     .of(prefix)
     .on('connection', function(socket){
       console.log("connected");
+    })
+    .on('raw-delete', function(data){
+      var topic = config.getTopic(data.name);
+      console.log("web is trying to remove" , topic);
+      raw.remove(topic); 
     });
   
-  mq = initMq(myio);
+  initMq(myio);
 
   app.get(prefix, function(req, res) {
-    res.render('raw', {values:raw});  
+    var rawdata = raw.get('/raw') || {}; 
+    rawdata = raw.flatten(rawdata, '/raw')
+    console.log("rawdata", rawdata);
+    res.render('raw', {values:rawdata});  
   });
 };
 

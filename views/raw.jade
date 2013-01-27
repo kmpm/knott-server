@@ -4,7 +4,7 @@ block content
   #raw
     table.table 
       for value, key in values
-        - var id = key.replace(/\//g, '_').replace(/\./g, '').substring(1);
+        - var id = topic2id(key);
         tr(id=id)
           td.topic=key
           td
@@ -38,8 +38,7 @@ block scripts
       var socket = io.connect('/raw');
       page.socket = socket;
       socket.on('raw-changed', function(data){
-        var id = data.topic.replace(/\//gi, '_').substring(1);
-        var id = id.replace(/\./g, '');
+        var id = topic2id(data.topic);
         var p = $('#' + id );
         if(p.length == 0){
           $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td></td><td>' + data.payload + '</td><td><a class="raw-delete" data-topic="' + id + '" href="#"><i class="icon-trash"></i></td></tr>\n');

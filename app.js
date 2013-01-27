@@ -34,6 +34,22 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.locals.title = 'knott';
 
+app.locals.id2topic = function (id) {
+  if(id[0] !== '_' ) id = '_' + id;
+  id=id.replace('__', '.');
+  return id.split('_').join('/');
+}
+app.locals.topic2id = function (/*topic*/) {
+  var args=[];
+  for(var i=0; i<arguments.length; i++){
+    args.push(arguments[i]);
+  }
+  var topic =  args.join('/').replace('//', '/');
+  console.log("topic=", topic);
+  var id = topic.split('/').splice(1).join('_');
+  return id.replace('.', '__');
+}
+
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

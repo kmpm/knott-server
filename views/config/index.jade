@@ -5,12 +5,12 @@ block content
     ul.nav.nav-tabs  
       for categories, driver in config
         li
-          a(href="#config_#{driver}", data-toggle="tab")=driver
+          a(href="##{topic2id('config', driver)}", data-toggle="tab")=driver
 
     .tab-content
       //list categories for driver
       for categories, driver in config
-        .tab-pane(id="config_#{driver}")
+        .tab-pane(id="#{topic2id('config', driver)}")
           //before include
           include inner-tabs 
           

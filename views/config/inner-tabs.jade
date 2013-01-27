@@ -4,15 +4,15 @@
   ul.nav.nav-tabs
     for devices, category in categories
       li
-        a(href="#config_#{driver}_#{category}", data-toggle="tab")=category
+        a(href="##{topic2id('config', driver, category)}", data-toggle="tab")=category
   .tab-content
     for devices, category in categories
-      .tab-pane(id="config_#{driver}_#{category}")
+      .tab-pane(id="#{topic2id('config', driver, category)}")
         for values, device in devices
-          .config-device(id="config_#{driver}_#{category}_#{device}")
+          .config-device(id="#{topic2id('config', driver, category, device)}")
             .config-device-header
               h3=device
-              a.btn.config-delete(data-topic="config_#{driver}_#{category}_#{device}")
+              a.btn.config-delete(data-topic="#{topic2id('config', driver, category, device)}")
                 i.icon-trash
             .config-device-body
               //table
@@ -26,14 +26,14 @@
                         i.icon-plus
                 tbody
                   for value, key in values
-                    tr(id="config_#{driver}_#{category}_#{device}_#{key}")
+                    tr(id="#{topic2id('config', driver, category, device, key)}")
                         td.config-key=key
                         td 
-                          input.config-input(name="config_#{driver}_#{category}_#{device}_#{key}", value=value)
+                          input.config-input(name="#{topic2id('config', driver, category, device, key)}", value=value)
                           a.btn.hidden.config-save(href="#") 
                             i.icon-ok
                         td
-                          a.btn.config-delete(data-topic="config_#{driver}_#{category}_#{device}_#{key}")
+                          a.btn.config-delete(data-topic="#{topic2id('config', driver, category, device, key)}")
                             i.icon-trash
 
 

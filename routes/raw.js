@@ -13,6 +13,11 @@ function initMq(myio) {
       c.emit('raw-changed', {topic:packet.topic, payload:packet.payload});
     });
   });
+  raw.on('removed', function(packet){
+    myio.clients().forEach(function(c){
+      c.emit('raw-removed', packet);
+    });
+  });
   return raw;
 }
 

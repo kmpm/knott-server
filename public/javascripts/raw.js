@@ -33,7 +33,8 @@ function setValue(id, nv) {
 }
 
 function toTime (date) {
-  return date.getHours()+1 + ":" + date.getMinutes() + ":" + date.getSeconds();
+  //return date.getHours()+1 + ":" + date.getMinutes() + ":" + date.getSeconds();
+  return date.toLocaleTimeString();
 }
 
 function listenSocket(){

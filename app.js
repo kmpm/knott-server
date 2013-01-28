@@ -13,6 +13,8 @@ var express = require('express')
 
 var app = express();
 
+process.title="knott-server";
+
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');

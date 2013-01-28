@@ -7,8 +7,8 @@ block content
         - var id = topic2id(key);
         tr(id=id)
           td.topic=key
-          td
-          td=value
+          td.refresh-at
+          td.raw-value=value
           td
             i.icon-pause.trend
           td
@@ -20,52 +20,5 @@ block content
 
 block scripts
   script(src='/socket.io/socket.io.js')
-  script
-    var page={};
-    $(document).ready(function(){
-      listenSocket();
-      $('.raw-delete').click(deleteHandler);
-    });
+  script(src='/javascripts/raw.js')
 
-    function deleteHandler(e){
-      e.preventDefault();
-      var $this=$(this);
-      var name = $this.data('topic');
-      var row = $this.closest('tr');
-      page.socket.emit('raw-delete', {name:name});
-      row.remove();
-    }
-
-    function listenSocket(){
-      var socket = io.connect('/raw');
-      page.socket = socket;
-      socket.on('raw-changed', function(data){
-        var id = topic2id(data.topic);
-        var p = $('#' + id );
-        if(p.length == 0){
-          var rowdata = '<tr id="' + id + '"><td class="topic">' + data.topic + '</td>'
-            + '<td>&nbsp;</td><td>' + data.payload + '</td>'
-            + '<td><i class="icon-pause trend"></i></td>'
-            + '<td><a class="raw-delete" data-topic="' + id + '" href="#"><i class="icon-trash"></i></a></td>'
-            + '</tr>\n';
-          $('#raw table').append(rowdata);
-        }
-        else {
-          var p2  =$(p[0]).children('td');
-          var $value = p2.eq(2);
-          var icon="icon-arrow-right";
-          var fp=parseFloat(data.payload), fv = parseFloat($value.html());
-          if (fp > fv){
-            icon="icon-arrow-up";
-          }
-          else if (fp < fv){
-            icon="icon-arrow-down";
-          }
-          p2.eq(2).html(data.payload);
-          p2.eq(1).html((new Date()).toString());
-         var t = $('#' + id + ' .trend');
-         t.attr('class', 'trend ' + icon);
-        }
-      });
-
-    }

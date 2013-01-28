@@ -41,7 +41,7 @@ block scripts
         var id = topic2id(data.topic);
         var p = $('#' + id );
         if(p.length == 0){
-          $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td></td><td>' + data.payload + '</td><td><a class="raw-delete" data-topic="' + id + '" href="#"><i class="icon-trash"></i></td></tr>\n');
+          $('#raw table').append('<tr id="' + id + '"><td class="topic">' + data.topic + '</td><td>&nbsp;</td><td>' + data.payload + '</td><td><a class="raw-delete" data-topic="' + id + '" href="#"><i class="icon-trash"></i></a></td></tr>\n');
         }
         else {
           var p2  =$(p[0]).children('td');

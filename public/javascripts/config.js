@@ -1,3 +1,4 @@
+/*global io */
 var page={};
 
 var listenSocket = function() {
@@ -5,10 +6,11 @@ var listenSocket = function() {
   page.socket=socket;
   socket.on('config-changed', function(data){
     console.log(data);
-    var $input = $('input[name="' + data.name + '"]');
-    console.log($input.val(), data.payload);
-    if($input.val() !== data.payload){
-      $input.val(data.payload);
+    data.key = data.key.replace(/:/g, '__');
+    var $input = $('input[name="' + data.key + '"]');
+    console.log($input.val(), data.value);
+    if($input.val() !== data.value){
+      $input.val(data.value);
     }
   });
 };
@@ -38,7 +40,7 @@ function bindConfigEvents(master){
   }
 
   function changedConfigHandler(eventObject){
-    $input = $(eventObject.currentTarget);
+    var $input = $(eventObject.currentTarget);
     console.log($input.attr('name'), 'chanaged');
     var $btn = $input.parent().find('.config-save').eq(0);
     $btn.removeClass('hidden');

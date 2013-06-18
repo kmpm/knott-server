@@ -10,10 +10,11 @@ var express = require('express')
   , util = require('util')
   , socket = require('socket.io');
 
+var appconfig = require('./lib/appconfig');
 
 var app = express();
 
-process.title="knott-server";
+process.title=appconfig.get('process:title');
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -57,8 +58,9 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 
+
 var io = socket.listen(server);
 io.set('log level', 1);
 require('./routes/config')(app, io);
-require('./routes/raw')(app, io);
+//require('./routes/raw')(app, io);
 
